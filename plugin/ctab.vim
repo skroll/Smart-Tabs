@@ -225,8 +225,8 @@ if ! exists('g:ctab_disable_checkalign') || g:ctab_disable_checkalign==0
           unlet b:ctab_lastalign
         endif
       endif
-      set ts=50
-      set sw=50
+      set ts=256
+      set sw=256
       if &indentexpr != ''
         let v:lnum=a:line
         sandbox exe 'let inda='.&indentexpr
@@ -248,8 +248,8 @@ if ! exists('g:ctab_disable_checkalign') || g:ctab_disable_checkalign==0
       let &ts=tskeep
       let &sw=swkeep
     endtry
-    let indatabs=inda / 50
-    let indaspace=inda % 50
+    let indatabs=inda / 256
+    let indaspace=inda % 256
     let indb=indent(a:line)
     if indatabs*&tabstop + indaspace == indb
       let txtindent=repeat("\<Tab>",indatabs).repeat(' ',indaspace)
