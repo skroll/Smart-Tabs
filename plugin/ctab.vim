@@ -81,7 +81,7 @@ endif
 
 if !exists('g:ctab_disable_tab_maps') || ! g:ctab_disable_tab_maps
   exe  'imap '.s:buff_map.'<silent> <expr> <tab> <SID>InsertSmartTab()'
-  exe  'inoremap '.s:buff_map.'<silent> <expr> <BS> <SID>DoSmartDelete()."\<BS>"'
+  "exe  'inoremap '.s:buff_map.'<silent> <expr> <BS> <SID>DoSmartDelete()."\<BS>"'
   exe  'inoremap '.s:buff_map.'<silent> <expr> <s-tab> <SID>DoSmartUnTab()'
 endif
 
