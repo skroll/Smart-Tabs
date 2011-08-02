@@ -182,7 +182,7 @@ fun! s:DoSmartUnTab()
   " preceding character is a <TAB>, then similarly fall back on defaults.
   "
   let lastchar=matchstr(uptohere,'.$')
-  if lastchar == "\<tab>" || uptohere =~ '^\s*$' | return '' | endif        " Simple cases
+  if lastchar == "\<tab>" || uptohere =~ '^\s*$' | return "\<BS>" | endif        " Simple cases
   if lastchar != ' ' | return ((&digraph)?("\<BS>".lastchar): '')  | endif  " Delete non space at end / Maintain digraphs
 
   " Work out how many tabs to use
