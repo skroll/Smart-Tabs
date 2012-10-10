@@ -326,25 +326,35 @@ if ! exists('g:ctab_disable_checkalign') || g:ctab_disable_checkalign==0
   " so that it calls the original, then checks all the indents.
   exe 'map '.s:buff_map.'<silent> <expr> = <SID>SetupEqual()'
   fun! s:SetupEqual()
-    set operatorfunc=CtabRedoIndent
+    set operatorfunc=CtabRedoIndentOperator
     " Call the operator func so we get the range
     return 'g@'
   endfun
 
-  fun! CtabRedoIndent(type,...)
+  fun! s:CtabRedoIndent( firstl, lastl )
+    let l = a:firstl
+
+    if ! &et
+      " Then check the alignment.
+      while l <= a:lastl
+        silent call s:CheckAlign(l)
+        let l+=1
+      endwhile
+    endif
+  endfun
+
+  fun! CtabRedoIndentOperator(type,...)
     set operatorfunc=
     let ln=line("'[")
     let lnto=line("']")
     " Do the original equals
     norm! '[=']
 
-    if ! &et
-      " Then check the alignment.
-      while ln <= lnto
-        silent call s:CheckAlign(ln)
-        let ln+=1
-      endwhile
-    endif
+    silent call s:CtabRedoIndent(ln, lnto)
+  endfun
+
+  fun! s:CtabRedoIndentRange() range
+    silent call s:CtabRedoIndent(a:firstline, a:lastline)
   endfun
 endif
 
@@ -387,6 +397,6 @@ endfun
 "   Optional argument specified the value of the new tabstops
 "   Bang (!) causes trailing whitespace to be gobbled.
 com! -nargs=? -range=% -bang -bar RetabIndent call <SID>RetabIndent(<q-bang>,<line1>, <line2>, <q-args> )
-
+com! -range CtabRedoIndent <line1>,<line2>call <SID>CtabRedoIndentRange()
 
 " vim: sts=2 sw=2 et
